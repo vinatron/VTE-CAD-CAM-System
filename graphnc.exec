@@ -8,6 +8,7 @@ ADDRESS COMMAND 'GDDMREXX INIT'              /* INITIALIZE GDDM */
 ADDRESS GDDM                                 /* WE ARE TALKING TO GDDM */       
 
 /* INIT VARS */
+TESTGDD = 1                                  /* SKIP TO GDDM INPUT */
 DEBUG = 0                                    /* ENABLE/DISABLE DEBUGGING */
 GMOTION = 0                                  /* CURRENT G-COMMAND */
 DATUM = 0                                    /* PART DATUM */
@@ -27,6 +28,10 @@ IF DEBUG = 1 THEN DO                         /* START DEBUG IF DEBUG = 1 */
  TRACE R                                     /* START REXX TRACING */
  'GXSET TRACE ON TIME'                       /* START GDDM-REXX TRACING */
 END                                          /* END DEBUG START */
+
+IF TESTGDD = 1 THEN DO                      /* START GDDM TEST IF TESTGDD = 1 */
+ SIGNAL DATUM                               /* JUMP TO DATUM */
+END                                         /* END DEBUG START */
 
 INPUTTEST:
 /* TEST IF ARGUMENTS ARE NULL AND START INTERACTIVE INPUT */
