@@ -98,6 +98,8 @@ END
 
 SAY 'YOUR DATUM SELECTION WAS:' DATUM        /* NOTIFY USER */
 
+ADDRESS COMMAND 'GDDMREXX TERM'              /* TERMINATE GDDM */
+
 EXIT                                         /* END OF PROGRAM */
 
 /*******************************************************/
