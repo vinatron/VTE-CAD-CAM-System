@@ -12,6 +12,9 @@ TESTGDD = 1                                  /* SKIP TO GDDM INPUT */
 DEBUG = 0                                    /* ENABLE/DISABLE DEBUGGING */
 GMOTION = 0                                  /* CURRENT G-COMMAND */
 DATUM = 0                                    /* PART DATUM */
+TXTF = ''                                    /* FIELD TEXT */
+TXTL = 0                                     /* TEXT LENGTH */
+RC = 0                                       /* ERROR VAREABLE */
 
 TRACE E                                      /* ERROR TRACING */
 
@@ -65,6 +68,15 @@ END
 
 DATUM:                                       /* DRAW DATUM ROUTINE */
 /* DRAW HAAS VQC STYLE DATUM SELECT */
+/* DEFINE ERROR FIELD */
+'ASFLD 2 1 1 1 60 2'
+/* CHECK RC OF PREVIOUS OPERATION */
+IF RC = 10 THEN DO
+ TXTF = 'INPUT INVALID PLEASE SPECIFY AN INTEGER BETWEEN 1 AND 9'; TXTL = LENGTH(TXTF)
+ 'ASCPUT 2 .TXTL .TXTF'
+ 'ASFCOL 2 2'
+ 'ASFHTL 2 2'
+END
 /* DRAW 80X80 SQUARE */
 'GSMOVE 20 20'                                             
 'GSLINE 80 20'                                             
@@ -92,7 +104,7 @@ DATUM:                                       /* DRAW DATUM ROUTINE */
 'ASCGET 1 1 .DATUM'             /* GET INT FROM FIELD 1 AND PUT INTO VARIABLE */
 IF (DATUM > 9) | (DATUM < 0) THEN DO         /* TEST FOR INVALID INPUT */
  /* NOTIFY USER */
- SAY 'INPUT INVALID PLEASE SPECIFY AN INTEGER BETWEEN 1 AND 9' 
+ RC = 10
  SIGNAL DATUM                                /* JUMP TO DRAW DATUM */
 END
 
