@@ -9,7 +9,7 @@ ADDRESS GDDM                                 /* WE ARE TALKING TO GDDM */
 
 /* INIT VARS */
 DEBUG = 0                                    /* ENABLE/DISABLE DEBUGGING */
-G-MOTION = 0                                 /* CURRENT G-COMMAND */
+GMOTION = 0                                  /* CURRENT G-COMMAND */
 DATUM = 0                                    /* PART DATUM */
 
 TRACE E                                      /* ERROR TRACING */
