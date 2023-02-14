@@ -103,8 +103,7 @@ END
 'ASREAD . . .'                       /* SEND TO TERMINAL AFTER PRESSING ENTER */          
 'ASCGET 1 1 .DATUM'             /* GET INT FROM FIELD 1 AND PUT INTO VARIABLE */
 IF (DATUM > 9) | (DATUM < 0) THEN DO         /* TEST FOR INVALID INPUT */
- /* NOTIFY USER */
- RC = 10
+ RC = 10                                     /* SET INVALID INPUT RC */
  SIGNAL DATUM                                /* JUMP TO DRAW DATUM */
 END
 
