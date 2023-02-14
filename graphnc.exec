@@ -101,4 +101,4 @@ EXIT                                         /* END OF PROGRAM */
 ERROR:
 SAY "UNEXPECTED RC" RC "FROM COMMAND:"
 SAY "     " SOURCELINE(SIGL)
-SAY "AT LINE" SIGL".
+SAY "AT LINE" SIGL"."
