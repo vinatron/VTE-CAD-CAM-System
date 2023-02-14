@@ -90,7 +90,7 @@ DATUM:                                       /* DRAW DATUM ROUTINE */
 'ASFCUR 1 -1 1'                        
 'ASREAD . . .'                       /* SEND TO TERMINAL AFTER PRESSING ENTER */          
 'ASCGET 1 1 .DATUM'             /* GET INT FROM FIELD 1 AND PUT INTO VARIABLE */
-IF DATUM > 9 | < 0 THEN DO                   /* TEST FOR INVALID INPUT */
+IF (DATUM > 9) | (DATUM < 0) THEN DO         /* TEST FOR INVALID INPUT */
  /* NOTIFY USER */
  SAY 'INPUT INVALID PLEASE SPECIFY AN INTEGER BETWEEN 1 AND 9' 
  SIGNAL DATUM                                /* JUMP TO DRAW DATUM */
