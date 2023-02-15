@@ -113,6 +113,22 @@ ADDRESS COMMAND 'GDDMREXX TERM'              /* TERMINATE GDDM */
 
 EXIT                                         /* END OF PROGRAM */
 
+/********************************************************
+*             LINE TYPE SELECTOR SUBROUTINE             *
+********************************************************/
+
+LINETYPE:
+ /* TEST IF MOTION IS RAPID TRAVERSE G0 */
+ IF GMOTION = 0 THEN DO
+  'GSLT 1'
+ END
+ 
+ /* TEST IF MOTION IS G1 LINEAR FEED MOVE OR G2/G3 ARC */
+ IF (GMOTION = 1) | (GMOTION = 2) | (GMOTION = 3) THEN DO
+  'GSLT 0'
+ END
+RETURN
+
 /*******************************************************/
 /* ERROR HANDLER: COMMON EXIT FOR NONZERO RETURN CODES */
 /*******************************************************/
