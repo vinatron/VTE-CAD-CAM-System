@@ -12,6 +12,9 @@ TESTGDD = 1                                  /* SKIP TO GDDM INPUT */
 DEBUG = 0                                    /* ENABLE/DISABLE DEBUGGING */
 GMOTION = 0                                  /* CURRENT G-COMMAND */
 DATUM = 0                                    /* PART DATUM */
+TXTF = ''                                    /* FIELD TEXT */
+TXTL = 0                                     /* TEXT LENGTH */
+RC = 0                                       /* ERROR VAREABLE */
 
 TRACE E                                      /* ERROR TRACING */
 
@@ -65,6 +68,16 @@ END
 
 DATUM:                                       /* DRAW DATUM ROUTINE */
 /* DRAW HAAS VQC STYLE DATUM SELECT */
+/* DEFINE ERROR FIELD */
+'ASFLD 2 1 1 1 60 2'
+/* CHECK RC OF PREVIOUS OPERATION */
+IF RC = 10 THEN DO
+ TXTF = 'INPUT INVALID PLEASE SPECIFY AN INTEGER BETWEEN 1 AND 9' 
+ TXTL = LENGTH(TXTF)
+ 'ASCPUT 2 .TXTL .TXTF'
+ 'ASFCOL 2 2'
+ 'ASFHTL 2 2'
+END
 /* DRAW 80X80 SQUARE */
 'GSMOVE 20 20'                                             
 'GSLINE 80 20'                                             
@@ -90,9 +103,8 @@ DATUM:                                       /* DRAW DATUM ROUTINE */
 'ASFCUR 1 -1 1'                        
 'ASREAD . . .'                       /* SEND TO TERMINAL AFTER PRESSING ENTER */          
 'ASCGET 1 1 .DATUM'             /* GET INT FROM FIELD 1 AND PUT INTO VARIABLE */
-IF (DATUM > 9) | (DATUM < 0) THEN DO         /* TEST FOR INVALID INPUT */
- /* NOTIFY USER */
- SAY 'INPUT INVALID PLEASE SPECIFY AN INTEGER BETWEEN 1 AND 9' 
+IF (DATUM > 9) | (DATUM < 1) THEN DO         /* TEST FOR INVALID INPUT */
+ RC = 10                                     /* SET INVALID INPUT RC */
  SIGNAL DATUM                                /* JUMP TO DRAW DATUM */
 END
 
@@ -101,6 +113,22 @@ SAY 'YOUR DATUM SELECTION WAS:' DATUM        /* NOTIFY USER */
 ADDRESS COMMAND 'GDDMREXX TERM'              /* TERMINATE GDDM */
 
 EXIT                                         /* END OF PROGRAM */
+
+/********************************************************
+*             LINE TYPE SELECTOR SUBROUTINE             *
+********************************************************/
+
+LINETYPE:
+ /* TEST IF MOTION IS RAPID TRAVERSE G0 */
+ IF GMOTION = 0 THEN DO
+  'GSLT 1'                                   /* SET LINE TYPE TO DOTTED */         
+ END
+ 
+ /* TEST IF MOTION IS G1 LINEAR FEED MOVE OR G2/G3 ARC */
+ IF (GMOTION = 1) | (GMOTION = 2) | (GMOTION = 3) THEN DO
+  'GSLT 0'                                   /* SET LINE TYPE SOLID DEFAULT */
+ END
+RETURN
 
 /*******************************************************/
 /* ERROR HANDLER: COMMON EXIT FOR NONZERO RETURN CODES */
